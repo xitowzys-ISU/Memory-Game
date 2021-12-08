@@ -26,16 +26,12 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        val rows = ArrayList<LinearLayout>();
-
-        for (i in 1..4) {
-            rows.add(LinearLayout(applicationContext).apply {
+        val rows = Array(4) {
+            LinearLayout(applicationContext).apply {
                 orientation = LinearLayout.HORIZONTAL
                 setBackgroundColor(Color.GRAY)
-                for (j in 1..4) addView(catViews[(i - 1) * 4 + (j - 1)])
-
+                for (j in 1..4) addView(catViews[(it) * 4 + (j - 1)])
             }
-            )
         }
 
         for (row in rows) layout.addView(row)
