@@ -1,10 +1,7 @@
 package com.example.makelayout
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 
@@ -29,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         val rows = Array(4) {
             LinearLayout(applicationContext).apply {
                 orientation = LinearLayout.HORIZONTAL
-                setBackgroundColor(Color.GRAY)
                 for (j in 1..4) addView(catViews[(it) * 4 + (j - 1)])
             }
         }
