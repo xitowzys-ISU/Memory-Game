@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val game = Game(4, applicationContext)
+        val game = Game(4, this)
 
 //        val layout = LinearLayout(applicationContext)
 //        layout.orientation = LinearLayout.VERTICAL
