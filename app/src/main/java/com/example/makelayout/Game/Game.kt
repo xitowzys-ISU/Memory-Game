@@ -1,7 +1,6 @@
 package com.example.makelayout.Game
 
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -10,19 +9,22 @@ import com.example.makelayout.R
 
 class Game(private val gridSize: Int = 4, private val context: Context) {
     val layout = LinearLayout(context)
+
     val params = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
         LinearLayout.LayoutParams.MATCH_PARENT
     )
 
+    private val rows = ArrayList<LinearLayout>(gridSize)
 
     /**
      * Array of cards
      */
     private val cardViews = ArrayList<Card>(gridSize * 4)
 
-    private val rows = ArrayList<LinearLayout>(gridSize)
-
+    /**
+     * All images for cards
+     */
     private val images = arrayOf(
         R.drawable.one_card,
         R.drawable.two_card,
@@ -60,6 +62,9 @@ class Game(private val gridSize: Int = 4, private val context: Context) {
         cardViews.shuffle()
     }
 
+    /**
+     * Generate a field for the game
+     */
     fun generateGame(): LinearLayout {
         params.weight = 1.toFloat()
 
@@ -86,13 +91,16 @@ class Game(private val gridSize: Int = 4, private val context: Context) {
         return layout
     }
 
-
+    /**
+     * Handling of a click on a card
+     */
     val colorListener = View.OnClickListener {
 
-        for((i, card) in cardViews.withIndex()) {
+        for ((i, card) in cardViews.withIndex()) {
             if (card.cardView == it) {
                 Log.d("colorListener", "Нажата карта: $i")
                 card.flipCard()
+                card.linkCard?.flipCard()
             }
         }
     }
