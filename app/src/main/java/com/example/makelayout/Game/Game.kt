@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.makelayout.R
 
-class Game(private val gridSize: Int, private val context: Context) {
+class Game(private val gridSize: Int = 4, private val context: Context) {
     val layout = LinearLayout(context)
     val params = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -22,16 +22,30 @@ class Game(private val gridSize: Int, private val context: Context) {
 
     private val rows = ArrayList<LinearLayout>(gridSize)
 
+    private val images = arrayOf(
+        R.drawable.one_card,
+        R.drawable.two_card,
+        R.drawable.three_card,
+        R.drawable.four_card,
+        R.drawable.five_card,
+        R.drawable.six_card,
+        R.drawable.seven_card,
+        R.drawable.eight_card
+    )
+
+    /**
+     * Generates linked pairs of cards in random order
+     */
     private fun generateCards() {
-        for (n in 1..8) {
+        for (n in 1..gridSize * 2) {
             val card = Card(ImageView(context).apply {
-                setImageResource(R.drawable.two_card)
+                setImageResource(images[n - 1])
                 layoutParams = params
                 setOnClickListener(colorListener)
             })
 
             val card2 = Card(ImageView(context).apply {
-                setImageResource(R.drawable.two_card)
+                setImageResource(images[n - 1])
                 layoutParams = params
                 setOnClickListener(colorListener)
             })
@@ -42,10 +56,11 @@ class Game(private val gridSize: Int, private val context: Context) {
                 add(card2)
             }
         }
+
+        cardViews.shuffle()
     }
 
     fun generateGame(): LinearLayout {
-        // Генерирует два объекта карточек и связываем их
         params.weight = 1.toFloat()
 
         layout.layoutParams = params
