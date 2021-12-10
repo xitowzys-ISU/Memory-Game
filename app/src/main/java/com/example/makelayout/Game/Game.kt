@@ -5,10 +5,15 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.example.makelayout.R
 
 class Game(private val gridSize: Int = 4, private val context: Context) {
     val layout = LinearLayout(context)
+
+    var isFirstCardOpen: Boolean = false
+
+    var isFreezeActivity: Boolean = false
 
     val params = LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -21,6 +26,9 @@ class Game(private val gridSize: Int = 4, private val context: Context) {
      * Array of cards
      */
     private val cardViews = ArrayList<Card>(gridSize * 4)
+
+
+    private val foundCards = ArrayList<Card>(gridSize * 4)
 
     /**
      * All images for cards
@@ -96,12 +104,64 @@ class Game(private val gridSize: Int = 4, private val context: Context) {
      */
     val colorListener = View.OnClickListener {
 
+        var indexCard: Int = 0
+
+        if (isFreezeActivity) return@OnClickListener
+
+        if (isVictory()) {
+            val toast =
+                Toast.makeText(context, context.getString(R.string.win_text), Toast.LENGTH_LONG)
+            toast.show()
+            return@OnClickListener
+        }
+
         for ((i, card) in cardViews.withIndex()) {
             if (card.cardView == it) {
-                Log.d("colorListener", "Нажата карта: $i")
-                card.flipCard()
-                card.linkCard?.flipCard()
+
+                indexCard = i
+                break
             }
         }
+
+        if (isFirstCardOpen) {
+            if(cardViews[indexCard].linkCard?.isOpen == true) {
+                cardViews[indexCard].flipCard()
+
+                cardViews[indexCard].isFoundPair = true
+                cardViews[indexCard].linkCard!!.isFoundPair = true
+
+                foundCards.apply {
+                    add(cardViews[indexCard].linkCard!!)
+                    add(cardViews[indexCard])
+                }
+            } else {
+                cardViews[indexCard].flipCard()
+                isFreezeActivity = true
+                closeAllCard()
+            }
+            isFirstCardOpen = isFirstCardOpen.not()
+        } else {
+            if (cardViews[indexCard].isFoundPair.not()) {
+                cardViews[indexCard].flipCard()
+                isFirstCardOpen = isFirstCardOpen.not()
+            }
+        }
+    }
+
+    private fun isVictory(): Boolean {
+        return foundCards.size == gridSize * 4
+    }
+
+    private fun closeAllCard() {
+        android.os.Handler().postDelayed({
+            for ((i, card) in cardViews.withIndex()) {
+                if (card.isFoundPair) {
+                    continue
+                }
+
+                if(card.isOpen) card.flipCard()
+            }
+            isFreezeActivity = false
+        }, 1000)
     }
 }

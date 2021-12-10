@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MakeLayout</string>
+    <string name="win_text">Вы выиграли!!!</string>
 </resources>

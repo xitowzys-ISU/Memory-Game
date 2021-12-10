@@ -17,8 +17,10 @@ class Card(
     /**
      * Card status
      */
-    private var isOpen: Boolean = false
+    var isOpen: Boolean = false
 
+
+    var isFoundPair: Boolean = false
     /**
      * Flips the card
      */
