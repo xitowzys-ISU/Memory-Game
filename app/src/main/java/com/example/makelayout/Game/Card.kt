@@ -1,31 +1,53 @@
 package com.example.makelayout.Game
 
 import android.widget.ImageView
+import com.example.makelayout.R
 
-class Card(val cardView: ImageView, var linkCard: Card? = null) {
+class Card(
+    val cardView: ImageView,
+    var linkCard: Card? = null,
+    val imageCard: Int,
+    val shirtCard: Int = R.drawable.shirt_card
+) {
+
+    init {
+        cardView.setImageResource(shirtCard)
+    }
+
     /**
      * Card status
      */
-    var isOpen: Boolean = false
-
+    private var isOpen: Boolean = false
 
     /**
-     * Generate a pair for the card
-     * @return The object of the second card
+     * Flips the card
      */
-    fun generatePair(): Card {
-        if (linkCard == null) {
-            val secondCard: Card = this.clone()
+    fun flipCard() {
+        isOpen = isOpen.not()
 
-            secondCard.linkCard = this
-            this.linkCard = secondCard
-
-            return secondCard
-        } else
-            throw  Exception("The card has a pair")
+        if (isOpen) cardView.setImageResource(imageCard) else cardView.setImageResource(shirtCard)
     }
 
-    private fun clone(): Card {
-        return Card(this.cardView, this.linkCard)
-    }
+//    /**
+//     * Generate a pair for the card
+//     * @return The object of the second card
+//     */
+//    fun generatePair(): Card {
+//        if (linkCard == null) {
+//            val secondCard: Card = this.clone()
+//
+//            secondCard.linkCard = this
+//            this.linkCard = secondCard
+//
+//            return secondCard
+//        } else
+//            throw  Exception("The card has a pair")
+//    }
+//
+//
+//
+//    private fun clone(): Card {
+//        return Card(this.cardView, this.linkCard)
+//    }
+
 }

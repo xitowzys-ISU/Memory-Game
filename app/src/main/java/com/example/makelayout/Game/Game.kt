@@ -2,6 +2,7 @@ package com.example.makelayout.Game
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -38,17 +39,16 @@ class Game(private val gridSize: Int = 4, private val context: Context) {
      */
     private fun generateCards() {
         for (n in 1..gridSize * 2) {
-            val card = Card(ImageView(context).apply {
-                setImageResource(images[n - 1])
+            val card = Card(cardView = ImageView(context).apply {
                 layoutParams = params
                 setOnClickListener(colorListener)
-            })
+            }, imageCard = images[n - 1])
 
             val card2 = Card(ImageView(context).apply {
-                setImageResource(images[n - 1])
                 layoutParams = params
                 setOnClickListener(colorListener)
-            })
+            }, imageCard = images[n - 1])
+
             card.linkCard = card2
             card2.linkCard = card
             cardViews.apply {
@@ -86,7 +86,14 @@ class Game(private val gridSize: Int = 4, private val context: Context) {
         return layout
     }
 
+
     val colorListener = View.OnClickListener {
-        it.setBackgroundColor(Color.YELLOW)
+
+        for((i, card) in cardViews.withIndex()) {
+            if (card.cardView == it) {
+                Log.d("colorListener", "Нажата карта: $i")
+                card.flipCard()
+            }
+        }
     }
 }
